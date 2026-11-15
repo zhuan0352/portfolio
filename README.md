@@ -14,6 +14,7 @@ and nothing to install.
 | `assets/js/main.js` | Highlights the current section in the navigation. |
 | `assets/img/` | Project pictures and the resume preview image. |
 | `assets/files/Zhuoran-Liu-Resume.pdf` | The resume that the Resume section links to. |
+| `CNAME` | Tells GitHub Pages to serve the site at `zhuoran6.com`. |
 | `.nojekyll` | Tells GitHub Pages to serve the files as they are. |
 
 ## Editing
@@ -62,9 +63,8 @@ The new version is live within a minute or so.
 
 ### Moving zhuoran6.com to this site
 
-1. On GitHub, open the repository's **Settings → Pages** and enter
-   `zhuoran6.com` under **Custom domain**. GitHub adds a `CNAME` file to the
-   repository; run `git pull` afterwards so your copy has it too.
+1. The `CNAME` file in this repository tells GitHub the site's domain. This
+   step is already done.
 2. In Cloudflare (where the domain's DNS is managed), replace the two `A`
    records for `zhuoran6.com` with GitHub's four: `185.199.108.153`,
    `185.199.109.153`, `185.199.110.153` and `185.199.111.153`. Point the `www`
