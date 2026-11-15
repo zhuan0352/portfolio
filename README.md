@@ -50,8 +50,8 @@ Then open <http://localhost:4173>.
 
 ## Publish with GitHub Pages
 
-The site lives in the GitHub repository `zhuan0352/zhuan0352.github.io` and is
-served from its `main` branch at <https://zhuan0352.github.io>. To update the
+The site lives in the GitHub repository `zhuan0352/portfolio` and is served
+from its `main` branch at <https://zhuan0352.github.io/portfolio/>. To update the
 live site, commit your changes and push:
 
 ```bash
