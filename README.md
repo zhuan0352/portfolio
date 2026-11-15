@@ -52,7 +52,7 @@ Then open <http://localhost:4173>.
 ## Publish with GitHub Pages
 
 The site lives in the GitHub repository `zhuan0352/portfolio` and is served
-from its `main` branch at <https://zhuan0352.github.io/portfolio/>. To update the
+from its `main` branch at <https://zhuoran6.com>. To update the
 live site, commit your changes and push:
 
 ```bash
@@ -61,17 +61,14 @@ git push origin main
 
 The new version is live within a minute or so.
 
-### Moving zhuoran6.com to this site
+### Domain
 
-1. The `CNAME` file in this repository tells GitHub the site's domain. This
-   step is already done.
-2. In Cloudflare (where the domain's DNS is managed), replace the two `A`
-   records for `zhuoran6.com` with GitHub's four: `185.199.108.153`,
-   `185.199.109.153`, `185.199.110.153` and `185.199.111.153`. Point the `www`
-   `CNAME` record at `zhuan0352.github.io`. Set these records to **DNS only**
-   (grey cloud) so GitHub can issue the HTTPS certificate.
-3. Back in **Settings → Pages**, tick **Enforce HTTPS** once it is offered.
-4. Remove the domain from the old Netlify site.
+`zhuoran6.com` is the site's custom domain (the `CNAME` file), with HTTPS
+enforced. Its DNS is managed in Cloudflare: four `A` records for the bare
+domain pointing at GitHub Pages (`185.199.108.153`, `185.199.109.153`,
+`185.199.110.153`, `185.199.111.153`) and a `www` `CNAME` record pointing at
+`zhuan0352.github.io`. Keep them set to **DNS only** (grey cloud) so GitHub
+can renew the certificate.
 
 ## Picture credits
 
