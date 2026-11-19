@@ -205,6 +205,53 @@ h1 {
 .icons a:hover { color: var(--accent); transform: translateY(-2px); }
 .icons svg { display: block; width: 1.7rem; height: 1.7rem; }
 
+/* "How's your week going?" slider: no end labels, on purpose */
+.mood { margin: 2.75rem 0 0; max-width: 24rem; }
+.mood-q { display: block; color: var(--muted); }
+.mood input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0.4rem 0 0;
+  background: transparent;
+  cursor: pointer;
+}
+.mood input::-webkit-slider-runnable-track { height: 2px; border-radius: 2px; background: rgba(35, 33, 30, 0.25); }
+.mood input::-moz-range-track { height: 2px; border-radius: 2px; background: rgba(35, 33, 30, 0.25); }
+.mood input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff8ef;
+  box-shadow: 0 1px 4px rgba(35, 33, 30, 0.35);
+  transition: transform 0.15s ease;
+}
+.mood input::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff8ef;
+  box-shadow: 0 1px 4px rgba(35, 33, 30, 0.35);
+}
+.mood input:active::-webkit-slider-thumb { transform: scale(1.2); }
+.mood input:focus-visible { outline: none; }
+.mood input:focus-visible::-webkit-slider-thumb { outline: 1px solid var(--accent); outline-offset: 3px; }
+.mood-reply {
+  min-height: 1.7em;
+  margin: 0.2rem 0 0;
+  font-style: italic;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.mood-reply.shown { opacity: 1; }
+
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -275,56 +322,163 @@ h3 {
 }
 
 /* ───────────── Projects ───────────── */
-.cards {
+/* The grid is wider than the text column so the screenshots have room. */
+.projects {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 2.75rem 1.5rem;
+  width: min(62rem, 100vw - 2.5rem);
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
-.card {
+.project {
   display: flex;
   flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The tinted backdrop each screenshot sits on */
+.stage {
+  position: relative;
+  aspect-ratio: 5 / 4;
   overflow: hidden;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 90% at 25% 15%, rgba(255, 255, 255, 0.85), transparent 60%),
+    linear-gradient(155deg, #f6f3ee, var(--tint, #ddd));
+  box-shadow: inset 0 0 0 1px rgba(35, 33, 30, 0.08);
+  perspective: 1400px;
+}
+
+.device {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) var(--tilt, none);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  box-shadow: 0 34px 50px -26px rgba(20, 18, 15, 0.55), 0 12px 22px -14px rgba(20, 18, 15, 0.35);
+}
+.device img { display: block; width: 100%; height: auto; }
+
+/* Browser window */
+.browser {
+  width: 86%;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #1d1d1f;
+}
+.browser .bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 9px;
+  background: #2b2b2e;
+}
+.browser .bar i { width: 7px; height: 7px; border-radius: 50%; background: #ff5f57; }
+.browser .bar i:nth-child(2) { background: #febc2e; }
+.browser .bar i:nth-child(3) { background: #28c840; }
+.browser .bar span {
+  flex: 1;
+  margin-right: 30px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 8px;
+  color: #9a9a9e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tilt-a { --tilt: rotateX(16deg) rotateY(-12deg) rotateZ(4deg) scale(0.94); }
+.tilt-b { --tilt: rotateX(12deg) rotateY(14deg) rotateZ(-3deg) scale(0.94); }
+
+/* Tablet */
+.tablet {
+  width: 84%;
+  padding: 7px;
+  border-radius: 18px;
+  background: #e9eaec;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 34px 50px -26px rgba(20, 18, 15, 0.55), 0 12px 22px -14px rgba(20, 18, 15, 0.35);
+  --tilt: rotateX(18deg) rotateY(10deg) rotateZ(-5deg) scale(0.94);
+}
+.tablet img { border-radius: 11px; }
+
+/* Phones */
+.phone {
+  height: 88%;
+  aspect-ratio: 390 / 844;
+  padding: 5px;
+  border-radius: 28px;
+  background: #121212;
+  box-shadow: inset 0 0 0 1.5px #3a3a3c, 0 34px 50px -26px rgba(20, 18, 15, 0.6), 0 12px 22px -14px rgba(20, 18, 15, 0.4);
+}
+.phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; }
+.phone::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 30%;
+  height: 11px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #121212;
+  z-index: 1;
+}
+.phone.back { --tilt: translate(-34%, -3%) rotateZ(-4deg) scale(0.92); }
+.phone.front { --tilt: translate(30%, 5%) rotateZ(3deg); }
+
+/* On hover the devices straighten up and come forward. */
+.project:hover .tilt-a,
+.project:hover .tilt-b,
+.project:hover .tablet,
+.project:focus-visible .tilt-a,
+.project:focus-visible .tilt-b,
+.project:focus-visible .tablet { --tilt: scale(1); }
+.project:hover .phone.back,
+.project:focus-visible .phone.back { --tilt: translate(-40%, -4%) rotateZ(-2deg) scale(0.95); }
+.project:hover .phone.front,
+.project:focus-visible .phone.front { --tilt: translate(36%, 3%) rotateZ(1deg) scale(1.03); }
+
+/* A soft backing in the page's own colour keeps the text easy to read over the pattern. */
+.project-text {
+  flex: 1;
+  margin-top: 0.7rem;
+  padding: 0.85rem 1rem 1rem;
+  border-radius: 12px;
+  background: rgba(var(--bg-rgb), 0.66);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  transition: border-color 0.25s ease, transform 0.25s ease;
 }
-.card:hover { border-color: var(--accent); transform: translateY(-2px); }
 
-/* Pictures are softened to sit in the palette and come to full colour on hover. */
-.card-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-bottom: 1px solid var(--rule);
-  filter: grayscale(0.45) contrast(0.92) brightness(1.04);
-  transition: filter 0.5s ease;
-}
-.card:hover .card-img { filter: none; }
-
-.card-body {
+.project-head {
   display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 1.15rem 1.35rem 1.2rem;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
 }
+.project-title { margin: 0; line-height: 1.4; }
+.project-title strong { font-weight: 500; }
+.project-title span { color: var(--muted); }
 
-.card-kicker {
-  margin: 0.25rem 0 0 !important;
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: none;
   font-family: var(--mono);
-  font-size: 0.6875rem !important;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent) !important;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
 }
+.live .arrow { width: 0.75rem; height: 0.75rem; transition: transform 0.25s ease; }
+.project:hover .live .arrow { transform: translate(2px, -2px); }
+.project:hover .project-title strong { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 0.22em; }
 
-.card p {
-  margin: 0.6rem 0 0;
+.project-desc {
+  margin: 0.5rem 0 0;
   font-size: 1.0625rem;
   line-height: 1.55;
   color: var(--muted);
@@ -334,8 +488,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: auto !important;
-  padding-top: 1rem;
+  margin: 0.85rem 0 0;
 }
 .tags span {
   font-family: var(--mono);
@@ -409,7 +562,8 @@ h3 {
   body { font-size: 1.125rem; }
   section { padding: 4rem 0; }
   .hero { padding-top: 4.5rem; }
-  .cards { grid-template-columns: 1fr; }
+  .projects { grid-template-columns: 1fr; gap: 2.5rem; }
+  .project-head { flex-direction: column; gap: 0.2rem; }
   .nav-inner { gap: 0.75rem; }
   .nav nav { gap: 0.75rem; font-size: 0.625rem; letter-spacing: 0.04em; }
   .entry-head { flex-direction: column; gap: 0.1rem; }
@@ -422,5 +576,5 @@ h3 {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .card, .card-img, .btn, .icons a, .resume-page { transition: none; }
+  .device, .live .arrow, .btn, .icons a, .resume-page, .mood-reply, .mood input::-webkit-slider-thumb { transition: none; }
 }

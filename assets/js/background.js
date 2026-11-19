@@ -12,6 +12,9 @@
     3. A new random seed on every visit.
     4. The cursor: a soft lamp follows it, brightening the page, calming the
        pattern underneath (easier reading) and bending the pattern around it.
+    5. The visitor's mood: the "How's your week going?" slider calls
+       livingBackground.setMood(0 to 1). Low slows and softens everything,
+       high speeds it up and makes it livelier (see MOOD below).
 
   To restyle the background, edit PRESETS. Keys match the data-bg attribute
   on each <section> in index.html.
@@ -42,6 +45,14 @@
     glow: 0.55,   // how much the page brightens under it (0 to 1)
     calm: 0.60,   // how much the pattern fades under it (0 to 1)
     bend: 0.80,   // how strongly the pattern bulges around it
+  };
+
+  // How far the mood slider can push the background, at each end.
+  const MOOD = {
+    speed:    [0.25, 2.6],   // flow speed multiplier at the low and high end
+    contrast: [0.65, 1.2],
+    warp:     [0.55, 1.45],
+    freq:     [0.8, 1.2],    // shape size (lower = bigger, calmer shapes)
   };
 
   const TEXT_VEIL = 0.55;          // pattern strength behind the text column (0 to 1)
@@ -255,6 +266,8 @@
   let pointerInside = false;
   let lamp = [0, 0, 0];            // eased x, y (CSS pixels) and strength
 
+  let mood = 0.5;                  // eased mood, 0 to 1 (0.5 = neutral)
+  let moodTarget = 0.5;
   let pageRgb = '';                // page colour last handed to the stylesheet
   let section = -1;                // index of the section whose look is showing
   let paused = false;
@@ -340,7 +353,8 @@
     }
 
     clock += dt;
-    flow += dt * cur.speed;
+    mood = lerp(mood, moodTarget, 1 - Math.exp(-dt / 0.6));
+    flow += dt * cur.speed * moodFx('speed');
 
     // A soft pool of stronger pattern wanders on its own.
     const wanderX = 0.5 + 0.34 * Math.sin(clock / 37 + phase[3]);
@@ -358,12 +372,18 @@
     lamp[2] = lerp(lamp[2], pointerInside ? 1 : 0, 1 - Math.exp(-dt / 0.3));
   }
 
+  // Multiplier for one MOOD setting at the current mood (1 at neutral).
+  function moodFx(key) {
+    const m = (mood - 0.5) * 2;
+    return m < 0 ? lerp(1, MOOD[key][0], -m) : lerp(1, MOOD[key][1], m);
+  }
+
   function draw() {
     if (!cur) return;
     // Slow drift, each setting on its own cycle so the mix never repeats.
-    const freq = cur.freq * (1 + 0.10 * Math.sin(clock / 47 + phase[0]));
-    const warp = cur.warp * (1 + 0.18 * Math.sin(clock / 71 + phase[1]));
-    const contrast = cur.contrast * (1 + 0.10 * Math.sin(clock / 59 + phase[2]));
+    const freq = cur.freq * (1 + 0.10 * Math.sin(clock / 47 + phase[0])) * moodFx('freq');
+    const warp = cur.warp * (1 + 0.18 * Math.sin(clock / 71 + phase[1])) * moodFx('warp');
+    const contrast = cur.contrast * (1 + 0.10 * Math.sin(clock / 59 + phase[2])) * moodFx('contrast');
 
     // Hand the page's current colour to the stylesheet, so the top bar matches it.
     const rgb = cur.page.map((c) => Math.round(c * 255)).join(', ');
@@ -476,4 +496,12 @@
   window.addEventListener('blur', pointerGone);
 
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stop(); });
+
+  // Used by the mood slider in main.js.
+  window.livingBackground = {
+    setMood(value) {
+      moodTarget = clamp01(Number(value) || 0);
+      if (paused) { mood = moodTarget; draw(); }
+    },
+  };
 })();
