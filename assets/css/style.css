@@ -214,8 +214,8 @@ h1 {
 
 .mood-slider {
   --v: 0.5;
-  --thumb-w: 38px;
-  --thumb-h: 24px;
+  --thumb-w: 28px;
+  --thumb-h: 18px;
   --mood-fill: rgb(143, 176, 138);
   position: relative;
   height: var(--thumb-h);
