@@ -23,8 +23,9 @@ and nothing to install.
 - **Text and links:** edit `index.html`.
 - **Projects:** each project is one `<a class="project">` block in
   `index.html`; the whole card opens the live app. The screenshot sits in a
-  device frame: `browser` (with `tilt-a` or `tilt-b`), `tablet`, or two
-  `phone`s (`back` and `front`). `--tint` sets the backdrop colour. Keep
+  device frame: `browser` (with `tilt-a` or `tilt-b`) or `tablet`; or use a
+  finished 5:4 picture as `<img class="stage-photo">`, as LoreTour does.
+  `--tint` sets the backdrop colour. Keep
   `data-wake` on the card so the page wakes that app early (see below).
 - **Resume:** replace `assets/files/Zhuoran-Liu-Resume.pdf`, then remake the
   preview image (macOS):

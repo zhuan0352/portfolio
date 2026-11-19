@@ -205,47 +205,105 @@ h1 {
 .icons a:hover { color: var(--accent); transform: translateY(-2px); }
 .icons svg { display: block; width: 1.7rem; height: 1.7rem; }
 
-/* "How's your week going?" slider: no end labels, on purpose */
-.mood { margin: 2.75rem 0 0; max-width: 24rem; }
+/* "How's your week going?" slider. No end labels, on purpose.
+   The real <input type="range"> sits invisibly on top, so dragging, keyboard
+   and screen readers all work; the pieces underneath are just its looks.
+   main.js sets --v (0 to 1) and --mood-fill as it moves. */
+.mood { margin: 2.75rem 0 0; max-width: 22rem; }
 .mood-q { display: block; color: var(--muted); }
+
+.mood-slider {
+  --v: 0.5;
+  --thumb-w: 46px;
+  --thumb-h: 30px;
+  --mood-fill: rgb(143, 176, 138);
+  position: relative;
+  height: 46px;
+  margin-top: 0.5rem;
+}
+
+.mood-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 11px;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 2px rgba(35, 33, 30, 0.14);
+}
+.mood-fill {
+  height: 100%;
+  width: calc(var(--v) * (100% - var(--thumb-w)) + var(--thumb-w) / 2);
+  border-radius: inherit;
+  background: var(--mood-fill);
+}
+
+.mood-dots {
+  position: absolute;
+  left: calc(var(--thumb-w) / 2);
+  right: calc(var(--thumb-w) / 2);
+  top: 34px;
+  display: flex;
+  justify-content: space-between;
+}
+.mood-dots i {
+  width: 4px;
+  height: 4px;
+  margin: 0 -2px;
+  border-radius: 50%;
+  background: rgba(35, 33, 30, 0.22);
+}
+
+/* The frosted glass pill */
+.mood-thumb {
+  position: absolute;
+  top: 0;
+  left: calc(var(--v) * (100% - var(--thumb-w)));
+  width: var(--thumb-w);
+  height: var(--thumb-h);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.34));
+  -webkit-backdrop-filter: blur(2px) saturate(1.6);
+  backdrop-filter: blur(2px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 6px 16px -4px rgba(35, 33, 30, 0.28),
+    0 1px 3px rgba(35, 33, 30, 0.16),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 6px rgba(35, 33, 30, 0.07);
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.3, 0.7, 0.4, 1.4), box-shadow 0.2s ease;
+}
+.mood-slider:has(input:active) .mood-thumb,
+.mood-slider.dragging .mood-thumb { transform: scale(1.1); }
+.mood-slider:has(input:focus-visible) .mood-thumb {
+  box-shadow:
+    0 0 0 3px rgba(var(--bg-rgb), 0.9),
+    0 0 0 4.5px var(--accent),
+    0 6px 16px -4px rgba(35, 33, 30, 0.28);
+}
+
 .mood input {
   -webkit-appearance: none;
   appearance: none;
-  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
-  height: 28px;
-  margin: 0.4rem 0 0;
-  background: transparent;
-  cursor: pointer;
+  height: var(--thumb-h);
+  margin: 0;
+  opacity: 0;
+  cursor: grab;
 }
-.mood input::-webkit-slider-runnable-track { height: 2px; border-radius: 2px; background: rgba(35, 33, 30, 0.25); }
-.mood input::-moz-range-track { height: 2px; border-radius: 2px; background: rgba(35, 33, 30, 0.25); }
-.mood input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  margin-top: -8px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 3px solid #fff8ef;
-  box-shadow: 0 1px 4px rgba(35, 33, 30, 0.35);
-  transition: transform 0.15s ease;
-}
-.mood input::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 3px solid #fff8ef;
-  box-shadow: 0 1px 4px rgba(35, 33, 30, 0.35);
-}
-.mood input:active::-webkit-slider-thumb { transform: scale(1.2); }
-.mood input:focus-visible { outline: none; }
-.mood input:focus-visible::-webkit-slider-thumb { outline: 1px solid var(--accent); outline-offset: 3px; }
+.mood input:active { cursor: grabbing; }
+.mood input::-webkit-slider-thumb { -webkit-appearance: none; width: var(--thumb-w); height: var(--thumb-h); }
+.mood input::-moz-range-thumb { width: var(--thumb-w); height: var(--thumb-h); border: 0; }
+
 .mood-reply {
   min-height: 1.7em;
-  margin: 0.2rem 0 0;
-  font-style: italic;
+  margin: 0.1rem 0 0;
   color: var(--ink);
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -405,30 +463,17 @@ h3 {
 }
 .tablet img { border-radius: 11px; }
 
-/* Phones */
-.phone {
-  height: 88%;
-  aspect-ratio: 390 / 844;
-  padding: 5px;
-  border-radius: 28px;
-  background: #121212;
-  box-shadow: inset 0 0 0 1.5px #3a3a3c, 0 34px 50px -26px rgba(20, 18, 15, 0.6), 0 12px 22px -14px rgba(20, 18, 15, 0.4);
-}
-.phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; }
-.phone::before {
-  content: "";
+/* A finished picture that fills the whole tile (used for LoreTour) */
+.stage-photo {
   position: absolute;
-  top: 10px;
-  left: 50%;
-  width: 30%;
-  height: 11px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: #121212;
-  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.phone.back { --tilt: translate(-34%, -3%) rotateZ(-4deg) scale(0.92); }
-.phone.front { --tilt: translate(30%, 5%) rotateZ(3deg); }
+.project:hover .stage-photo,
+.project:focus-visible .stage-photo { transform: scale(1.03); }
 
 /* On hover the devices straighten up and come forward. */
 .project:hover .tilt-a,
@@ -437,10 +482,6 @@ h3 {
 .project:focus-visible .tilt-a,
 .project:focus-visible .tilt-b,
 .project:focus-visible .tablet { --tilt: scale(1); }
-.project:hover .phone.back,
-.project:focus-visible .phone.back { --tilt: translate(-40%, -4%) rotateZ(-2deg) scale(0.95); }
-.project:hover .phone.front,
-.project:focus-visible .phone.front { --tilt: translate(36%, 3%) rotateZ(1deg) scale(1.03); }
 
 /* A soft backing in the page's own colour keeps the text easy to read over the pattern. */
 .project-text {
@@ -569,12 +610,12 @@ h3 {
   .entry-head { flex-direction: column; gap: 0.1rem; }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 540px) {
   .nav-name { display: none; }
   .nav nav { margin-right: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .device, .live .arrow, .btn, .icons a, .resume-page, .mood-reply, .mood input::-webkit-slider-thumb { transition: none; }
+  .device, .stage-photo, .live .arrow, .btn, .icons a, .resume-page, .mood-reply, .mood-thumb { transition: none; }
 }

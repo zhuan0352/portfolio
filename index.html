@@ -65,7 +65,12 @@
       <!-- "How's your week going?" The background reacts to the answer (see background.js). -->
       <div class="mood">
         <label class="mood-q" for="mood">How’s your week going so far?</label>
-        <input id="mood" type="range" min="0" max="100" step="1" value="50">
+        <div class="mood-slider">
+          <div class="mood-track" aria-hidden="true"><div class="mood-fill"></div></div>
+          <div class="mood-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="mood-thumb" aria-hidden="true"></div>
+          <input id="mood" type="range" min="0" max="100" step="1" value="50">
+        </div>
         <p class="mood-reply" id="mood-reply" aria-live="polite"></p>
       </div>
     </section>
@@ -118,12 +123,7 @@
 
         <a class="project" href="https://loretour.onrender.com/" target="_blank" rel="noopener" data-wake style="--tint: #f2d6a2">
           <div class="stage">
-            <div class="device phone back">
-              <img src="assets/img/projects/loretour.jpg" width="780" height="1688" loading="lazy" alt="LoreTour passenger view: a map of the route from Kingston to Ottawa, the car’s speed and heading, and a story about the Canadian Museum of Nature straight ahead">
-            </div>
-            <div class="device phone front">
-              <img src="assets/img/projects/loretour-driver.jpg" width="780" height="1688" loading="lazy" alt="LoreTour driver view: large text reading Now, Canadian Museum of Nature, with big Talk, Pause, Skip and Tell me more buttons">
-            </div>
+            <img class="stage-photo" src="assets/img/projects/loretour.webp" width="1402" height="1122" loading="lazy" alt="Two phones running LoreTour: the passenger view with a route map, speed, heading and a story, and the driver view reading Now, Canadian Museum of Nature, with big Talk, Pause, Skip and Tell me more buttons">
           </div>
           <div class="project-text">
           <div class="project-head">

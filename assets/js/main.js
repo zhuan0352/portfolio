@@ -51,17 +51,35 @@
   if (!slider || !reply) return;
 
   const KEY = 'week-mood';
+  // [up to this point on the slider, label for screen readers, reply]
   const REPLIES = [
-    [0.2, 'rough week', 'Sorry it’s been a rough one. I’ve slowed everything down. Take a breath.'],
-    [0.4, 'tough week', 'Hang in there. Easing things off a little for you.'],
-    [0.6, 'steady week', 'A steady week. Keeping things steady.'],
-    [0.8, 'good week', 'Nice! Picking up the pace.'],
-    [1.01, 'great week', 'Love that! Turning everything up a notch.'],
+    [0.2, 'rough week', 'Oof, sorry. Hope it gets better from here.'],
+    [0.4, 'tough week', 'Hang in there, the weekend’s coming.'],
+    [0.6, 'okay week', 'Not bad at all.'],
+    [0.8, 'good week', 'Nice! Keep it going.'],
+    [1.01, 'great week', 'Love to hear it!'],
   ];
+
+  // The fill colour follows the answer, through the site's own section colours:
+  // calm blue at the low end, sage in the middle, warm amber at the top.
+  const box = slider.closest('.mood-slider');
+
+  const STOPS = [[127, 163, 200], [143, 176, 138], [224, 154, 79]];
+
+  function paint(v) {
+    if (!box) return;
+    const t = v * 2;
+    const [a, b] = t < 1 ? [STOPS[0], STOPS[1]] : [STOPS[1], STOPS[2]];
+    const f = t < 1 ? t : t - 1;
+    const c = a.map((x, i) => Math.round(x + (b[i] - x) * f));
+    box.style.setProperty('--v', v.toFixed(4));
+    box.style.setProperty('--mood-fill', `rgb(${c.join(', ')})`);
+  }
 
   function respond(value, remember) {
     const v = Math.min(1, Math.max(0, value / 100));
     const [, label, text] = REPLIES.find(([upTo]) => v < upTo);
+    paint(v);
     slider.setAttribute('aria-valuetext', label);
     reply.textContent = text;
     reply.classList.add('shown');
@@ -72,7 +90,11 @@
   }
 
   slider.addEventListener('input', () => respond(Number(slider.value), true));
+  // A pressed state for browsers without :has()
+  slider.addEventListener('pointerdown', () => box && box.classList.add('dragging'));
+  window.addEventListener('pointerup', () => box && box.classList.remove('dragging'));
 
+  paint(Number(slider.value) / 100);
   let saved = null;
   try { saved = localStorage.getItem(KEY); } catch (e) { /* private mode */ }
   if (saved !== null && !Number.isNaN(Number(saved))) {
