@@ -53,11 +53,11 @@
   const KEY = 'week-mood';
   // [up to this point on the slider, label for screen readers, reply]
   const REPLIES = [
-    [0.2, 'rough week', 'Oof, sorry. Hope it gets better from here.'],
-    [0.4, 'tough week', 'Hang in there, the weekend’s coming.'],
-    [0.6, 'okay week', 'Not bad at all.'],
-    [0.8, 'good week', 'Nice! Keep it going.'],
-    [1.01, 'great week', 'Love to hear it!'],
+    [0.2, 'rough week', 'I’ve slowed things down for you :)'],
+    [0.4, 'tough week', 'The weekend’s coming!'],
+    [0.6, 'okay week', 'Not bad at all'],
+    [0.8, 'good week', 'Love to hear it'],
+    [1.01, 'great week', 'Let\'s goooooo!!'],
   ];
 
   // The fill colour follows the answer, through the site's own section colours:

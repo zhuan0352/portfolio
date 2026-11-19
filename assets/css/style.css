@@ -214,19 +214,19 @@ h1 {
 
 .mood-slider {
   --v: 0.5;
-  --thumb-w: 46px;
-  --thumb-h: 30px;
+  --thumb-w: 38px;
+  --thumb-h: 24px;
   --mood-fill: rgb(143, 176, 138);
   position: relative;
-  height: 46px;
-  margin-top: 0.5rem;
+  height: var(--thumb-h);
+  margin-top: 0.6rem;
 }
 
 .mood-track {
   position: absolute;
   left: 0;
   right: 0;
-  top: 11px;
+  top: calc((var(--thumb-h) - 8px) / 2);
   height: 8px;
   border-radius: 999px;
   overflow: hidden;
@@ -238,22 +238,6 @@ h1 {
   width: calc(var(--v) * (100% - var(--thumb-w)) + var(--thumb-w) / 2);
   border-radius: inherit;
   background: var(--mood-fill);
-}
-
-.mood-dots {
-  position: absolute;
-  left: calc(var(--thumb-w) / 2);
-  right: calc(var(--thumb-w) / 2);
-  top: 34px;
-  display: flex;
-  justify-content: space-between;
-}
-.mood-dots i {
-  width: 4px;
-  height: 4px;
-  margin: 0 -2px;
-  border-radius: 50%;
-  background: rgba(35, 33, 30, 0.22);
 }
 
 /* The frosted glass pill */
@@ -303,7 +287,7 @@ h1 {
 
 .mood-reply {
   min-height: 1.7em;
-  margin: 0.1rem 0 0;
+  margin: 0.6rem 0 0;
   color: var(--ink);
   opacity: 0;
   transition: opacity 0.4s ease;
